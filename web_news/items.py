@@ -41,8 +41,17 @@ class FroumItem(Item):
     view_num = Field(output_processor=Join(separator=''))
     reply_num = Field(output_processor=Join(separator=''))
     website = Field(output_processor=Join(separator=''))
+    key = Field(output_processor=Join(separator=''))
 
-
+class FroumReplyItem(Item):
+    url = Field(output_processor=Join(separator=''))
+    date = Field(output_processor=Join(separator=''))
+    content = Field(output_processor=Join(separator=''))
+    md5 = Field(output_processor=Join(separator=''))
+    collection_name = Field(output_processor=Join(separator=''))
+    website = Field(output_processor=Join(separator=''))
+    replyid = Field(output_processor=Join(separator=''))
+    key = Field(output_processor=Join(separator=''))
 
 class SpiderItem(Item):
     # define the fields for your item here like:
