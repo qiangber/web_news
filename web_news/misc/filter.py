@@ -30,10 +30,20 @@ class Filter(object):
 
         return ret
 
+    def haveseen_replylink(self, link, replyid):
+        if link+replyid in self.seen:
+            return True
+        ret = self.db['reply'].find({'url': link, 'collection_name': 'reply', 'replyid': replyid}).count() > 0
+
+        if ret:
+            self.seen.add(link+replyid)
+
+        return ret
+
     def link_lastupdate(self, link, last_reply):
         if link + last_reply in self.seen:
             return True
-        ret = self.col.find({'url': link, 'collection_name': self.name, 'last_reply':last_reply}).count() > 0
+        ret = self.col.find({'url': link, 'collection_name': self.name, 'last_reply': last_reply}).count() > 0
 
         if ret:
             self.seen.add(link+last_reply)
@@ -61,6 +71,7 @@ class Filter(object):
         mongo_port = crawler.settings.get('MONGO_PORT')
         client = MongoClient(mongo_ip, mongo_port)
         db = client[mongo_db]
+        db.authenticate(mongo_username, mongo_password)
         col = db[mongo_collection]
         return cls(client=client, db=db, col=col, name=name)
 
